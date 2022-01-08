@@ -24,6 +24,6 @@ describe('IngredientController', () => {
   it('should call the service', () => {
     const ingredientDto = {};
     controller.save(ingredientDto);
-    expect(service.save).toHaveBeenCalled();
+    expect(service.createIngredient).toHaveBeenCalled();
   });
 });

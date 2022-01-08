@@ -1,12 +1,12 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { IngredientService } from './ingredient.service';
 
-@Controller('ingredient')
+@Controller('ingredients')
 export class IngredientController {
   constructor(private service: IngredientService) {}
 
   @Post()
   public save(@Body() ingredientDto: any) {
-    this.service.save(ingredientDto);
+    this.service.createIngredient(ingredientDto);
   }
 }
