@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { IngredientRepository } from './ingredient.repository';
 import { IngredientService } from './ingredient.service';
@@ -35,6 +36,16 @@ describe('IngredientService', () => {
     it('should save a ingredient', async () => {
       (repository.createIngredient as jest.Mock).mockReturnValue(mockData);
       expect(await service.createIngredient(mockData)).toEqual(mockData);
+    });
+
+    it('should fail due invalid parameter', async () => {
+      (repository.createIngredient as jest.Mock).mockRejectedValue(
+        new InternalServerErrorException(),
+      );
+      mockData.measureUnit = 'INVALID';
+      await expect(service.createIngredient(mockData)).rejects.toThrow(
+        new InternalServerErrorException(),
+      );
     });
   });
 });

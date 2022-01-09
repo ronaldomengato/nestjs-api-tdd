@@ -1,5 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
+import { validateOrReject } from 'class-validator';
+
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { Ingredient } from './ingredient.entity';
 
@@ -13,6 +15,7 @@ export class IngredientRepository extends Repository<Ingredient> {
     ingredient.measureUnit = createIngredientDto.measureUnit;
     ingredient.price = createIngredientDto.price;
     try {
+      await validateOrReject(ingredient);
       await this.save(ingredient);
     } catch (error) {
       throw new InternalServerErrorException(error);
