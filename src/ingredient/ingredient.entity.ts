@@ -1,4 +1,6 @@
+import { IsIn } from 'class-validator';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { measurementUnits } from './dto/create-ingredient.dto';
 
 @Entity()
 export class Ingredient extends BaseEntity {
@@ -9,6 +11,7 @@ export class Ingredient extends BaseEntity {
   name: string;
 
   @Column()
+  @IsIn(measurementUnits)
   measureUnit: string;
 
   @Column({ type: 'float' })
