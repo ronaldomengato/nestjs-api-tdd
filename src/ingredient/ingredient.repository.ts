@@ -1,4 +1,7 @@
-import { InternalServerErrorException } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { validateOrReject } from 'class-validator';
 
@@ -22,5 +25,15 @@ export class IngredientRepository extends Repository<Ingredient> {
     }
 
     return ingredient;
+  }
+
+  async getIngredients(name: string) {
+    const result = await this.find({ where: { name } });
+
+    if (!result) {
+      throw new NotFoundException();
+    }
+
+    return result;
   }
 }
