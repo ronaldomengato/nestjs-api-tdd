@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpStatus,
   Post,
+  Query,
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
@@ -22,5 +24,10 @@ export class IngredientController {
     ingredientDto: CreateIngredientDto,
   ) {
     return this.service.createIngredient(ingredientDto);
+  }
+
+  @Get()
+  public get(@Query('name') name: string) {
+    return this.service.getIngredients(name);
   }
 }

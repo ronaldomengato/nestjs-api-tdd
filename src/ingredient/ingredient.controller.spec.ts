@@ -31,4 +31,11 @@ describe('IngredientController', () => {
     controller.save(ingredientDto);
     expect(service.createIngredient).toHaveBeenCalled();
   });
+
+  describe('/ GET', () => {
+    it('should call the service for getIngredients', () => {
+      controller.get('');
+      expect(service.getIngredients).toHaveBeenCalled();
+    });
+  });
 });
