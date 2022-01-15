@@ -20,7 +20,6 @@ describe('IngredientController (e2e)', () => {
           username: 'modavest',
           password: 'modavest',
           database: 'recipes',
-          // entities: [join(__dirname, '**', '*.entity.{ts,js}')],
           entities: [Ingredient],
           synchronize: true,
         }),

@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { IngredientController } from './ingredient.controller';
 import { IngredientService } from './ingredient.service';
 jest.mock('./ingredient.service');
@@ -22,7 +23,11 @@ describe('IngredientController', () => {
   });
 
   it('should call the service', () => {
-    const ingredientDto = {};
+    const ingredientDto: CreateIngredientDto = {
+      name: '',
+      measureUnit: '',
+      price: 0,
+    };
     controller.save(ingredientDto);
     expect(service.createIngredient).toHaveBeenCalled();
   });
