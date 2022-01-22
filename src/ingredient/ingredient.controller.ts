@@ -3,7 +3,9 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
+  Put,
   Query,
   ValidationPipe,
 } from '@nestjs/common';
@@ -29,5 +31,18 @@ export class IngredientController {
   @Get()
   public get(@Query('name') name: string) {
     return this.service.getIngredients(name);
+  }
+
+  @Put(':id')
+  public update(
+    @Param('id') ingredientId: string,
+    @Body(
+      new ValidationPipe({
+        errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      }),
+    )
+    ingredientDto: CreateIngredientDto,
+  ) {
+    return this.service.updateIngredient(+ingredientId, ingredientDto);
   }
 }

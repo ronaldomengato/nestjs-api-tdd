@@ -1,0 +1,23 @@
+GET http://localhost:3000/ingredients
+
+###
+
+POST http://localhost:3000/ingredients HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Milk",
+    "measureUnit": "l",
+    "price": 8.9
+}
+
+###
+
+PUT http://localhost:3000/ingredients/2 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Sugar",
+    "measureUnit": "kg",
+    "price": 8.9
+}

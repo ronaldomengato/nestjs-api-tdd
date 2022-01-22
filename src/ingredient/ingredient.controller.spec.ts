@@ -7,6 +7,7 @@ jest.mock('./ingredient.service');
 describe('IngredientController', () => {
   let controller: IngredientController;
   let service: IngredientService;
+  let mockData = { name: 'Sugar', measureUnit: 'kg', price: 5.5 };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -36,6 +37,13 @@ describe('IngredientController', () => {
     it('should call the service for getIngredients', () => {
       controller.get('');
       expect(service.getIngredients).toHaveBeenCalled();
+    });
+  });
+
+  describe('/{id} PUT', () => {
+    it('should call the service for updateIngredient', () => {
+      controller.update('1', mockData);
+      expect(service.updateIngredient).toHaveBeenCalled();
     });
   });
 });
