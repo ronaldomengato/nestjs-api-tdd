@@ -23,14 +23,16 @@ describe('IngredientController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should call the service', () => {
-    const ingredientDto: CreateIngredientDto = {
-      name: '',
-      measureUnit: '',
-      price: 0,
-    };
-    controller.save(ingredientDto);
-    expect(service.createIngredient).toHaveBeenCalled();
+  describe('/ POST', () => {
+    it('should call the service for createIngredient', () => {
+      const ingredientDto: CreateIngredientDto = {
+        name: '',
+        measureUnit: '',
+        price: 0,
+      };
+      controller.save(ingredientDto);
+      expect(service.createIngredient).toHaveBeenCalled();
+    });
   });
 
   describe('/ GET', () => {
@@ -44,6 +46,13 @@ describe('IngredientController', () => {
     it('should call the service for updateIngredient', () => {
       controller.update('1', mockData);
       expect(service.updateIngredient).toHaveBeenCalled();
+    });
+  });
+
+  describe('/{id} DELETE', () => {
+    it('should call the service for deleteIngredient', () => {
+      controller.delete('1');
+      expect(service.deleteIngredient).toHaveBeenCalled();
     });
   });
 });

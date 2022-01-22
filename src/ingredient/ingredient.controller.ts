@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -44,5 +45,10 @@ export class IngredientController {
     ingredientDto: CreateIngredientDto,
   ) {
     return this.service.updateIngredient(+ingredientId, ingredientDto);
+  }
+
+  @Delete(':id')
+  public delete(@Param('id') ingredientId: string) {
+    return this.service.deleteIngredient(+ingredientId);
   }
 }

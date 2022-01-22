@@ -20,6 +20,7 @@ describe('IngredientService', () => {
     find: jest.fn(),
     findOneOrFail: jest.fn(),
     save: jest.fn(),
+    delete: jest.fn(),
   });
 
   beforeEach(async () => {
@@ -113,6 +114,21 @@ describe('IngredientService', () => {
     it('should return all ingredients', async () => {
       (repository.find as jest.Mock).mockResolvedValueOnce(mockedList);
       expect(await service.getIngredients()).toEqual(mockedList);
+    });
+  });
+
+  describe('deleteIngredient', () => {
+    it('should delete ingredient', async () => {
+      service.deleteIngredient(1);
+      expect(repository.delete).toBeCalled();
+    });
+    it('should throw internal server excepctions', async () => {
+      jest
+        .spyOn(repository, 'delete')
+        .mockRejectedValue(new InternalServerErrorException());
+      await expect(service.deleteIngredient(1)).rejects.toThrow(
+        new InternalServerErrorException(),
+      );
     });
   });
 });

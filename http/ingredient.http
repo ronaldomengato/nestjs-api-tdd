@@ -21,3 +21,7 @@ Content-Type: application/json
     "measureUnit": "kg",
     "price": 8.9
 }
+
+###
+
+DELETE http://localhost:3000/ingredients/2 HTTP/1.1

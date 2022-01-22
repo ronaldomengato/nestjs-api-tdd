@@ -50,4 +50,12 @@ export class IngredientService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  public async deleteIngredient(ingredientId: number) {
+    try {
+      await this.repository.delete(ingredientId);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }
