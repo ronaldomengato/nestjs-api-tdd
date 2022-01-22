@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import { validateOrReject } from 'class-validator';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { Ingredient } from './ingredient.entity';
 import { IngredientRepository } from './ingredient.repository';
@@ -25,5 +30,24 @@ export class IngredientService {
     }
 
     return result;
+  }
+
+  public async updateIngredient(
+    ingredientId: number,
+    ingredientDto: CreateIngredientDto,
+  ) {
+    try {
+      const entity = await this.repository.findOneOrFail(ingredientId);
+      if (!entity) {
+        throw new NotFoundException();
+      }
+      entity.name = ingredientDto.name;
+      entity.measureUnit = ingredientDto.measureUnit;
+      entity.price = ingredientDto.price;
+      await validateOrReject(entity);
+      return this.repository.save(entity);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

@@ -3,6 +3,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import * as validator from 'class-validator';
 import { IngredientRepository } from './ingredient.repository';
 import { IngredientService } from './ingredient.service';
 
@@ -17,6 +18,8 @@ describe('IngredientService', () => {
     createIngredient: jest.fn(),
     getIngredients: jest.fn(),
     find: jest.fn(),
+    findOneOrFail: jest.fn(),
+    save: jest.fn(),
   });
 
   beforeEach(async () => {
@@ -60,6 +63,37 @@ describe('IngredientService', () => {
       await expect(service.createIngredient(mockData)).rejects.toThrow(
         new InternalServerErrorException(),
       );
+    });
+  });
+
+  describe('updateIngredient', () => {
+    it('should throw not found', async () => {
+      (repository.findOneOrFail as jest.Mock).mockResolvedValueOnce(undefined);
+      await expect(service.updateIngredient(1, mockData)).rejects.toThrow(
+        new NotFoundException(),
+      );
+    });
+    it('should fail due invalid parameter', async () => {
+      (repository.findOneOrFail as jest.Mock).mockResolvedValueOnce(mockData);
+      mockData.measureUnit = 'INVALID';
+      jest.spyOn(validator, 'validateOrReject').mockImplementationOnce(() => {
+        throw new InternalServerErrorException();
+      });
+      await expect(service.updateIngredient(1, mockData)).rejects.toThrow(
+        new InternalServerErrorException(),
+      );
+    });
+    it('should update the ingredient', async () => {
+      (repository.findOneOrFail as jest.Mock).mockResolvedValueOnce(mockData);
+      mockData.price = 11.99;
+      (repository.save as jest.Mock).mockResolvedValueOnce({
+        ...mockData,
+        id: 1,
+      });
+      expect(await service.updateIngredient(1, mockData)).toEqual({
+        ...mockData,
+        id: 1,
+      });
     });
   });
 
